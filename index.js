@@ -3,6 +3,7 @@
 // This is an example of using p2pspider, you can change the code to make it do something else.
 var fs = require('fs');
 var path = require('path');
+var parseTorrent = require('parse-torrent');
 
 var bencode = require('bencode');
 var P2PSpider = require('./lib');
@@ -26,7 +27,8 @@ p2p.on('metadata', function (metadata) {
         if (err) {
             return console.error(err);
         }
-        console.log(metadata.infohash + ".torrent has saved.");
+        var info =  parseTorrent(fs.readFileSync(__dirname + '/' + metadata.infohash +'.torrent'));
+        console.log(metadata.infohash + ".torrent has saved.    fileName is -->",info.name);
     });
 });
 
