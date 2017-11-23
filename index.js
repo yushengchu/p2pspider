@@ -27,7 +27,7 @@ p2p.on('metadata', function (metadata) {
         if (err) {
             return console.error(err);
         }
-        var info =  parseTorrent(fs.readFileSync(__dirname + '/' + metadata.infohash +'.torrent'));
+        var info =  parseTorrent(fs.readFileSync(__dirname + '/torrents/' + metadata.infohash +'.torrent'));
         console.log(metadata.infohash + ".torrent has saved.    fileName is -->",info.name);
     });
 });
