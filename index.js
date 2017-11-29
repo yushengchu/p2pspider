@@ -5,8 +5,13 @@ var fs = require('fs');
 var path = require('path');
 var parseTorrent = require('parse-torrent');
 
+var MongoClient = require('mongodb').MongoClient;
+var DB_CONN_STR = 'mongodb://localhost:27017/TorrentDB';
+
 var bencode = require('bencode');
 var P2PSpider = require('./lib');
+
+var collection = null;
 
 var p2p = P2PSpider({
     nodesMaxSize: 400,
@@ -29,7 +34,51 @@ p2p.on('metadata', function (metadata) {
         }
         var info =  parseTorrent(fs.readFileSync(__dirname + '/torrents/' + metadata.infohash +'.torrent'));
         console.log(metadata.infohash + ".torrent has saved.    fileName is -->",info.name);
+        var dbInfo = {
+            torrent:metadata.infohash +'.torrent',
+            fileName:info.name,
+            files:getFileInfo(info.files)
+        };
+        insertData(dbInfo,function(result) {
+            console.log(result.result);
+        });
+
     });
 });
 
-p2p.listen(6881, '0.0.0.0');
+var getFileInfo = function (files) {
+    var filesArr = [];
+    files.forEach(function(item,index){
+        var info = {
+            fileName:item.name,
+            size:item.length
+        }
+        filesArr.push(info);
+    });
+    return filesArr;
+}
+
+/**
+* 连接数据库
+* */
+MongoClient.connect(DB_CONN_STR, function(err, db) {
+    console.log("连接成功！");
+    collection = db.collection('torrentInfo');
+    //连接成功 开始监听
+    p2p.listen(6881, '0.0.0.0');
+});
+
+/**
+ * 插入数据
+ * */
+var insertData = function(data,callback) {
+    //插入数据
+    collection.insert(data, function(err, result) {
+        if(err) {
+            console.log('Error:'+ err);
+            return;
+        }
+        callback(result);
+    });
+}
+
