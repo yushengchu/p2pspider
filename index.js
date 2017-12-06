@@ -76,6 +76,7 @@ var insertData = function(data,callback) {
 
 var getDBClient = function () {
     MongoClient.connect(DB_CONN_STR, function (err, db) {
+        console.log('err -->',err);
         if (err) {
             return false
         } else {
