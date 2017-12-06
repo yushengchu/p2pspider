@@ -59,16 +59,6 @@ var getFileInfo = function (files) {
 }
 
 /**
-* 连接数据库
-* */
-MongoClient.connect(DB_CONN_STR, function(err, db) {
-    console.log("连接成功！");
-    collection = db.collection('torrentInfo');
-    //连接成功 开始监听
-    p2p.listen(6881, '0.0.0.0');
-});
-
-/**
  * 插入数据
  * */
 var insertData = function(data,callback) {
@@ -82,3 +72,32 @@ var insertData = function(data,callback) {
     });
 }
 
+
+var getDBClient = function () {
+    MongoClient.connect(DB_CONN_STR, function (err, db) {
+        if (err) {
+            return false
+        } else {
+            collection = db.collection('torrentInfo');
+            return true
+        }
+
+    });
+}
+
+var startdb = function () {
+    exec('/usr/local/mongodb/bin/mongod  --shutdown --dbpath /usr/local/mongodb/data/');
+    exec('/usr/local/mongodb/bin/mongod --dbpath=/usr/local/mongodb/data --logpath=/usr/local/mongodb/logs --logappend  --port=27017 --fork');
+}
+
+var getStart = function () {
+    var status = getDBClient();
+    while (!status){
+        console.log('连接失败');
+        startdb();
+        status = getDBClient();
+    }
+    p2p.listen(6881, '0.0.0.0');
+}
+
+getStart();
