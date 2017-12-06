@@ -10,6 +10,7 @@ var DB_CONN_STR = 'mongodb://localhost:27017/TorrentDB';
 
 var bencode = require('bencode');
 var P2PSpider = require('./lib');
+var shelljs = require('shelljs/global');
 
 var collection = null;
 
