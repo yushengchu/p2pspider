@@ -41,7 +41,7 @@ p2p.on('metadata', function (metadata) {
             files:getFileInfo(info.files)
         };
         insertData(dbInfo,function(result) {
-            console.log(result.result);
+            console.log('result.result --->',result.result);
         });
 
     });
@@ -67,6 +67,7 @@ var insertData = function(data,callback) {
     collection.insert(data, function(err, result) {
         if(err) {
             console.log('Error:'+ err);
+            startDB();
             return;
         }
         callback(result);
