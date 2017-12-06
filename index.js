@@ -73,33 +73,18 @@ var insertData = function(data,callback) {
     });
 }
 
-
-var getDBClient = function () {
-    MongoClient.connect(DB_CONN_STR, function (err, db) {
-        console.log('err -->',err);
-        if (err) {
-            return false
-        } else {
-            collection = db.collection('torrentInfo');
-            return true
-        }
-
-    });
-}
-
-var startdb = function () {
+var startDB = function () {
     exec('/usr/local/mongodb/bin/mongod  --shutdown --dbpath /usr/local/mongodb/data/');
     exec('/usr/local/mongodb/bin/mongod --dbpath=/usr/local/mongodb/data --logpath=/usr/local/mongodb/logs --logappend  --port=27017 --fork');
 }
 
-var getStart = function () {
-    var status = getDBClient();
-    while (!status){
-        console.log('连接失败');
-        startdb();
-        status = getDBClient();
-    }
-    p2p.listen(6881, '0.0.0.0');
-}
 
-getStart();
+MongoClient.connect(DB_CONN_STR, function (err, db) {
+    if (err) {
+        startDB();
+        exec('node index.js')
+    } else {
+        collection = db.collection('torrentInfo');
+        p2p.listen(6881, '0.0.0.0');
+    }
+});
