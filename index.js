@@ -75,8 +75,8 @@ var insertData = function(data,callback) {
 }
 
 var startDB = function () {
-    exec('/usr/local/mongodb/bin/mongod  --shutdown --dbpath /usr/local/mongodb/data/');
-    exec('/usr/local/mongodb/bin/mongod --dbpath=/usr/local/mongodb/data --logpath=/usr/local/mongodb/logs --logappend  --port=27017 --fork');
+    exec('/home/sands_joker/mongodb/bin/mongod  --shutdown --dbpath /home/sands_joker/mongodb/data/db');
+    exec('/home/sands_joker/mongodb/bin/mongod --dbpath=/home/sands_joker/mongodb/data/db --logpath=/home/sands_joker/mongodb/data/logs --logappend  --port=2701 --fork');
 }
 
 
