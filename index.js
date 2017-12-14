@@ -81,12 +81,12 @@ var startDB = function () {
 
 
 MongoClient.connect(DB_CONN_STR, function (err, db) {
-    if (err) {
-        startDB();
-        exec('node index.js')
-        process.exit(1);
-    } else {
+    // if (err) {
+    //     startDB();
+    //     exec('node index.js')
+    //     process.exit(1);
+    // } else {
         collection = db.collection('torrentInfo');
         p2p.listen(6881, '0.0.0.0');
-    }
+    // }
 });
