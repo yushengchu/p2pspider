@@ -35,14 +35,14 @@ p2p.on('metadata', function (metadata) {
         }
         var info =  parseTorrent(fs.readFileSync(__dirname + '/torrents/' + metadata.infohash +'.torrent'));
         console.log(metadata.infohash + ".torrent has saved.    fileName is -->",info.name);
-        var dbInfo = {
-            torrent:metadata.infohash +'.torrent',
-            fileName:info.name,
-            files:getFileInfo(info.files)
-        };
-        insertData(dbInfo,function(result) {
-            console.log('result.result --->',result.result);
-        });
+        // var dbInfo = {
+        //     torrent:metadata.infohash +'.torrent',
+        //     fileName:info.name,
+        //     files:getFileInfo(info.files)
+        // };
+        // insertData(dbInfo,function(result) {
+        //     console.log('result.result --->',result.result);
+        // });
 
     });
 });
@@ -67,26 +67,16 @@ var insertData = function(data,callback) {
     collection.insert(data, function(err, result) {
         if(err) {
             console.log('Error:'+ err);
-            startDB();
             return;
         }
         callback(result);
     });
 }
 
-var startDB = function () {
-    exec('/home/sands_joker/mongodb/bin/mongod  --shutdown --dbpath /home/sands_joker/mongodb/data/db');
-    exec('/home/sands_joker/mongodb/bin/mongod --dbpath=/home/sands_joker/mongodb/data/db --logpath=/home/sands_joker/mongodb/data/logs --logappend  --port=2701 --fork');
-}
 
+// MongoClient.connect(DB_CONN_STR, function (err, db) {
+//     // collection = db.collection('torrentInfo');
+//     p2p.listen(6881, '0.0.0.0');
+// });
 
-MongoClient.connect(DB_CONN_STR, function (err, db) {
-    // if (err) {
-    //     startDB();
-    //     exec('node index.js')
-    //     process.exit(1);
-    // } else {
-        collection = db.collection('torrentInfo');
-        p2p.listen(6881, '0.0.0.0');
-    // }
-});
+p2p.listen(6881, '0.0.0.0');
