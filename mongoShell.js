@@ -23,8 +23,8 @@ MongoClient.connect(DB_CONN_STR, function(err, db) {
             }
             files.forEach(function (filename) {
                 var path = fileDirectory + filename;
-                var info =  parseTorrent(fs.readFileSync(path));
-                if(info){
+                try{
+                    var info =  parseTorrent(fs.readFileSync(path));
                     var dbInfo = {
                         torrent:filename,
                         fileName:info.name,
@@ -33,9 +33,10 @@ MongoClient.connect(DB_CONN_STR, function(err, db) {
                     insertData(dbInfo,function(result) {
                         console.log(result.result);
                     });
-                }else{
+                }catch(e){
                     fs.unlink(path);
                 }
+                
             });
         });
     }
