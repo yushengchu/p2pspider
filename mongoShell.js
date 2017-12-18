@@ -13,7 +13,7 @@ var collection = null;
  * */
 MongoClient.connect(DB_CONN_STR, function(err, db) {
     console.log("连接成功！");
-    collection = db.collection('torrents');
+    collection = db.collection('torrentInfo');
 
     if(fs.existsSync(fileDirectory)){
         fs.readdir(fileDirectory, function (err, files) {
