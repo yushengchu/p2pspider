@@ -33,7 +33,7 @@ MongoClient.connect(DB_CONN_STR, function(err, db) {
                     insertData(dbInfo,function(result) {
                         console.log(result.result);
                     });
-                    console.log()
+                    console.log('filename -->',filename);
                 }catch(e){
                     fs.unlink(path);
                 }
