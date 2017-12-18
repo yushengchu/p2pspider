@@ -16,7 +16,7 @@ MongoClient.connect(DB_CONN_STR, async function (err, db) {
     collection = db.collection('torrents');
 
     if (fs.existsSync(fileDirectory)) {
-        fs.readdir(fileDirectory, async function (err, files) {
+        fs.readdir(fileDirectory, function (err, files) {
             if (err) {
                 console.log(err);
                 return;
