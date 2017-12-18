@@ -11,7 +11,7 @@ var collection = null;
 /**
  * 连接数据库
  * */
-MongoClient.connect(DB_CONN_STR, async function (err, db) {
+MongoClient.connect(DB_CONN_STR, function (err, db) {
     console.log("连接成功！");
     collection = db.collection('torrents');
 
