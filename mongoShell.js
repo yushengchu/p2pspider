@@ -35,6 +35,7 @@ MongoClient.connect(DB_CONN_STR, function(err, db) {
                     });
                     console.log('filename -->',filename);
                 }catch(e){
+                    console.log('error');
                     fs.unlink(path);
                 }
                 
